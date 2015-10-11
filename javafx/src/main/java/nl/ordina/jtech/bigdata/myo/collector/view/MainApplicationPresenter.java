@@ -5,18 +5,14 @@ import com.thalmic.myo.Myo;
 import com.thalmic.myo.enums.StreamEmgType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import nl.ordina.jtech.bigdata.myo.collector.collectors.RecordCountCollector;
-import nl.ordina.jtech.bigdata.myo.collector.myo.RawDataCollector;
-import nl.ordina.jtech.bigdata.myo.core.*;
-import nl.ordina.jtech.bigdata.myo.core.csv.CsvDataCollectionWriter;
-import nl.ordina.jtech.bigdata.myo.core.csv.CsvDataCollector;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import nl.ordina.jtech.bigdata.myo.core.collectors.FileMyoDataCollector;
+import nl.ordina.jtech.bigdata.myo.core.collectors.JsonDataCollector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -25,41 +21,24 @@ import java.util.ResourceBundle;
 public class MainApplicationPresenter implements Initializable {
 
     public static final Logger LOGGER = LogManager.getLogger(MainApplicationPresenter.class);
-
-    private boolean collecting = true;
-    public static final String HEADER_LINE = "timestamp;qx;qy;qz;pitch;roll;yaw;ax;ay;az;gx;gy;gz";
-
-
     @FXML
     Label myoStatus;
     @FXML
     Label collectorStatus;
-
     @FXML
     Button startButton;
     @FXML
-    Button okButton;
-    @FXML
-    Button badButton;
-
-
+    Button stopButton;
+    private boolean collecting = true;
     private Hub hub;
-    private List<DataCollector> dataCollectors = new ArrayList<>();
-    private List<DataCollectionWriter> dataCollectionWriters = new ArrayList<>();
+    private FileMyoDataCollector fileMyoDataCollector;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         statusUpdate("");
-
-        CsvDataCollector csvDataCollector = new CsvDataCollector();
-        dataCollectors.add(csvDataCollector);
-        //dataCollectors.add(new TextAreaCollector(logArea));
-
-
-        dataCollectors.add(new RecordCountCollector());
-        dataCollectionWriters.add(new CsvDataCollectionWriter(csvDataCollector, "c:\\tmp\\myo"));
-
+        stopButton.setDisable(true);
+        startButton.setDisable(true);
         hub = new Hub(this.getClass().getCanonicalName());
         LOGGER.info("Initialized");
     }
@@ -69,24 +48,12 @@ public class MainApplicationPresenter implements Initializable {
         myoStatus.setText(status);
     }
 
-    public void okAction() {
-        collecting = false;
-        toggleButtons();
-        dataCollectionWriters.stream().forEach(DataCollectionWriter::writeOkData);
-
-
-    }
-
-    public void badAction() {
-        collecting = false;
-        toggleButtons();
-        dataCollectionWriters.stream().forEach(DataCollectionWriter::writeBadData);
-    }
 
     public void startAction() {
-
+        fileMyoDataCollector.start();
         collecting = true;
-        dataCollectors.stream().forEach(DataCollector::reset);
+        startButton.setDefaultButton(false);
+        stopButton.setDefaultButton(true);
         toggleButtons();
         new Thread(() -> {
             while (collecting) {
@@ -95,10 +62,18 @@ public class MainApplicationPresenter implements Initializable {
         }).start();
     }
 
+    public void stopAction() {
+        fileMyoDataCollector.stop();
+        collecting = false;
+        toggleButtons();
+        fileMyoDataCollector.dump("Data");
+        startButton.setDefaultButton(true);
+        stopButton.setDefaultButton(false);
+    }
+
     private void toggleButtons() {
         startButton.setDisable(collecting);
-        okButton.setDisable(!collecting);
-        badButton.setDisable(!collecting);
+        stopButton.setDisable(!collecting);
     }
 
     public void connectMyo() {
@@ -116,11 +91,19 @@ public class MainApplicationPresenter implements Initializable {
             myo.setStreamEmg(StreamEmgType.STREAM_EMG_ENABLED);
             LOGGER.info("EMG Stream enabled");
             updateMyoStatus("Connected to a Myo armband!");
-            DeviceListenerImpl deviceListener = new DeviceListenerImpl();
-            deviceListener.addListener(dataCollectors);
-            hub.addListener(new RawDataCollector());
-            hub.addListener(deviceListener);
+//            DeviceListenerImpl deviceListener = new DeviceListenerImpl(dataCollectors);
+//            deviceListener.addListener(dataCollectors);
+
+            JsonDataCollector jsonDataCollector = new JsonDataCollector();
+            fileMyoDataCollector = new FileMyoDataCollector("c:\\tmp\\myo");
+            jsonDataCollector.addObserver(fileMyoDataCollector);
+
+            hub.addListener(jsonDataCollector);
+//            hub.addListener(deviceListener);
             LOGGER.info("Listener added");
+
+            startButton.setDisable(false);
+            startButton.setDefaultButton(true);
 
         } catch (Exception e) {
             updateMyoStatus("Error: " + e.getMessage());

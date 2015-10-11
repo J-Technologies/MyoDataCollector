@@ -1,13 +1,14 @@
-package nl.ordina.jtech.bigdata.myo.core;
+package nl.ordina.jtech.bigdata.myo.core.model;
 
+import com.google.gson.Gson;
 import com.thalmic.myo.Quaternion;
 
 /**
  * Created by pieter on 9/11/2015.
  */
 public class EulerAngles {
+    public static final Gson GSON = new Gson();
     private static final int SCALE = 18;
-
     private final double roll;
     private final double pitch;
     private final double yaw;
@@ -39,10 +40,6 @@ public class EulerAngles {
 
     @Override
     public String toString() {
-        return "EulerAngles{" +
-                "roll=" + roll +
-                ", pitch=" + pitch +
-                ", yaw=" + yaw +
-                '}';
+        return GSON.toJson(this);
     }
 }

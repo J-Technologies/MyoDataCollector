@@ -1,33 +1,19 @@
-package nl.ordina.jtech.bigdata.myo.collector.myo;
+package nl.ordina.jtech.bigdata.myo.core.collectors;
 
 import com.thalmic.myo.*;
 import com.thalmic.myo.enums.Arm;
 import com.thalmic.myo.enums.WarmupResult;
 import com.thalmic.myo.enums.WarmupState;
 import com.thalmic.myo.enums.XDirection;
-import eu.hansolo.enzo.common.Section;
-import eu.hansolo.enzo.common.SectionBuilder;
-import eu.hansolo.enzo.vumeter.VuMeter;
-import nl.ordina.jtech.bigdata.myo.core.EulerAngles;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
-import java.util.Arrays;
-import java.util.Timer;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import nl.ordina.jtech.bigdata.myo.core.model.MyoDataRecord;
 
 /**
  * Created by pieter on 10/2/2015.
  */
-public class RawDataCollector implements DeviceListener {
+public class JsonDataCollector implements DeviceListener, RecordObserver {
 
     private long lastTimestamp = 0;
-    private MyoDataRecord dataRecord = new MyoDataRecord();
-
+    private MyoDataRecord dataRecord = new MyoDataRecord(-1, null);
 
     @Override
     public void onPair(Myo myo, long l, FirmwareVersion firmwareVersion) {
@@ -77,7 +63,6 @@ public class RawDataCollector implements DeviceListener {
     @Override
     public void onOrientationData(Myo myo, long l, Quaternion quaternion) {
         dataRecord.setQuaternion(quaternion);
-        dataRecord.setEulerAngles(new EulerAngles(quaternion));
     }
 
     @Override
@@ -102,11 +87,17 @@ public class RawDataCollector implements DeviceListener {
 
     @Override
     public void onEmgData(Myo myo, long l, byte[] bytes) {
-        if (l != lastTimestamp) {
-            lastTimestamp = l;
-            dataRecord.setEmg(bytes);
-            System.out.println(dataRecord);
-            dataRecord.reset(l, bytes);
+        synchronized (dataRecord) {
+            if (lastTimestamp == 0) {
+                dataRecord = new MyoDataRecord(l, bytes);
+            }
+            if (l != lastTimestamp) {
+                lastTimestamp = l;
+                dataRecord.setEmg(bytes);
+                System.out.println(dataRecord);
+                emit(dataRecord);
+                dataRecord = new MyoDataRecord(l, bytes);
+            }
         }
     }
 

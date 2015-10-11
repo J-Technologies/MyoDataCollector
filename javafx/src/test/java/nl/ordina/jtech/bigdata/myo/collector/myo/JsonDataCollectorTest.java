@@ -1,17 +1,18 @@
 package nl.ordina.jtech.bigdata.myo.collector.myo;
 
+import nl.ordina.jtech.bigdata.myo.core.collectors.JsonDataCollector;
 import org.junit.Test;
 
 /**
  * Created by pieter on 10/2/2015.
  */
-public class RawDataCollectorTest {
+public class JsonDataCollectorTest {
 
     @Test
     public void testOnEmgData() throws Exception {
-        RawDataCollector rawDataCollector = new RawDataCollector();
+        JsonDataCollector jsonDataCollector = new JsonDataCollector();
 
         byte[] bytes = {-10, 100, -23, -54};
-        rawDataCollector.onEmgData(null,1, bytes);
+        jsonDataCollector.onEmgData(null, 1, bytes);
     }
 }

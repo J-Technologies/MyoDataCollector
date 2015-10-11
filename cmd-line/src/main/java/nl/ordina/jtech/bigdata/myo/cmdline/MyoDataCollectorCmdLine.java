@@ -1,13 +1,9 @@
 package nl.ordina.jtech.bigdata.myo.cmdline;
 
-import com.thalmic.myo.DeviceListener;
 import com.thalmic.myo.Hub;
 import com.thalmic.myo.Myo;
 import com.thalmic.myo.enums.StreamEmgType;
-import nl.ordina.jtech.bigdata.myo.core.csv.CsvDataCollectionWriter;
-import nl.ordina.jtech.bigdata.myo.core.csv.CsvDataCollector;
 import nl.ordina.jtech.bigdata.myo.core.DataCollectionWriter;
-import nl.ordina.jtech.bigdata.myo.core.DeviceListenerImpl;
 
 import java.io.IOException;
 
@@ -16,12 +12,12 @@ import java.io.IOException;
  */
 public class MyoDataCollectorCmdLine {
 
-    private CsvDataCollector dataCollector;
+    //    private CsvDataCollector dataCollector;
     DataCollectionWriter dataCollectionWriter;
 
     public MyoDataCollectorCmdLine() throws IOException {
-        dataCollector = new CsvDataCollector();
-        dataCollectionWriter = new CsvDataCollectionWriter(dataCollector, "c:\\tmp\\myo");
+//        dataCollector = new CsvDataCollector();
+//        dataCollectionWriter = new CsvDataCollectionWriter(dataCollector, "c:\\tmp\\myo");
     }
 
 
@@ -44,8 +40,8 @@ public class MyoDataCollectorCmdLine {
             myo.setStreamEmg(StreamEmgType.STREAM_EMG_ENABLED);
 
             System.out.println("Connected to a Myo armband!");
-            DeviceListener dataCollector = new DeviceListenerImpl(this.dataCollector);
-            hub.addListener(dataCollector);
+            //DeviceListener dataCollector = new DeviceListenerImpl(this.dataCollector);
+            // hub.addListener(dataCollector);
 
             while (true) {
                 startRun(hub);
@@ -86,13 +82,13 @@ public class MyoDataCollectorCmdLine {
 
     private  void doBad() {
         System.out.println("Bad");
-        dataCollectionWriter.writeBadData();
+        dataCollectionWriter.write("BAD");
         clearInBuffer();
     }
 
     private  void doOk() {
         System.out.println("Ok");
-        dataCollectionWriter.writeOkData();
+        dataCollectionWriter.write("OK");
         clearInBuffer();
     }
 
