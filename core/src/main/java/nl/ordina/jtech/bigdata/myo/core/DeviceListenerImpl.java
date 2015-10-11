@@ -1,4 +1,4 @@
-package nl.ordina.jtech.bigdata.myo.cmdline;
+package nl.ordina.jtech.bigdata.myo.core;
 
 import com.thalmic.myo.*;
 import com.thalmic.myo.enums.Arm;
@@ -8,16 +8,20 @@ import com.thalmic.myo.enums.XDirection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by pieter on 9/11/2015.
  */
 public class DeviceListenerImpl implements DeviceListener {
 
     public static final Logger LOGGER = LogManager.getLogger(DeviceListenerImpl.class);
-    private final DataCollector dataCollector;
+    private List<DataCollector> dataCollectors = new ArrayList<>();
 
-    public DeviceListenerImpl(DataCollector dataCollector) {
-        this.dataCollector = dataCollector;
+
+    public void addListener(final List<DataCollector> collectors) {
+        dataCollectors.addAll(collectors);
     }
 
     @Override
@@ -69,19 +73,25 @@ public class DeviceListenerImpl implements DeviceListener {
     public void onOrientationData(Myo myo, long l, Quaternion quaternion) {
         LOGGER.trace("{}:Orientation:{}", l, quaternion);
         LOGGER.trace("{}:{}", l, new EulerAngles(quaternion));
-        dataCollector.onOrientation(l, quaternion);
+        for (DataCollector dataCollector : dataCollectors) {
+            dataCollector.onOrientation(l, quaternion);
+        }
     }
 
     @Override
     public void onAccelerometerData(Myo myo, long l, Vector3 vector3) {
         LOGGER.trace("{}:Accelerometer:{}", l, vector3);
-        dataCollector.onAcceleroMeter(l, vector3);
+        for (DataCollector dataCollector : dataCollectors) {
+            dataCollector.onAcceleratorMeter(l, vector3);
+        }
     }
 
     @Override
     public void onGyroscopeData(Myo myo, long l, Vector3 vector3) {
         LOGGER.trace("{}:Gyro:{}", l, vector3);
-        dataCollector.onGyro(l, vector3);
+        for (DataCollector dataCollector : dataCollectors) {
+            dataCollector.onGyro(l, vector3);
+        }
     }
 
     @Override
@@ -101,7 +111,7 @@ public class DeviceListenerImpl implements DeviceListener {
 
     @Override
     public void onWarmupCompleted(Myo myo, long l, WarmupResult warmupResult) {
-        LOGGER.info("Warmup complete {}", warmupResult);
+        LOGGER.info("Warm up complete {}", warmupResult);
     }
 
 

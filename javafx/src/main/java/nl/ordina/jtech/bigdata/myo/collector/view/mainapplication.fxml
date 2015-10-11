@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import eu.hansolo.enzo.vumeter.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.86" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.ordina.jtech.bigdata.myo.collector.view.MainApplicationPresenter">
+   <children>
+      <Label fx:id="myoStatus" alignment="BASELINE_LEFT" contentDisplay="CENTER" layoutY="771.0" prefHeight="31.0" prefWidth="590.0" style="-fx-background-color: #d3d3d3;" text="Label" textAlignment="CENTER" textFill="#720cee" textOverrun="CLIP">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Label>
+      <Label fx:id="collectorStatus" layoutX="590.0" layoutY="771.0" prefHeight="31.0" prefWidth="691.0" style="-fx-background-color: #d3d3d3;" text="Label" textFill="#720cee">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <MenuBar prefHeight="25.0" prefWidth="1280.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Connections">
+            <items>
+              <MenuItem fx:id="menuItemConnectMyo" mnemonicParsing="false" onAction="#connectMyo" text="Connect Myo" />
+                  <MenuItem mnemonicParsing="false" onAction="#connectAnalyzer" text="Connect Analyzer" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Button fx:id="startButton" layoutX="103.0" layoutY="678.0" mnemonicParsing="false" onAction="#startAction" prefHeight="56.0" prefWidth="128.0" text="Start">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Button>
+      <Button fx:id="okButton" layoutX="915.0" layoutY="678.0" mnemonicParsing="false" onAction="#okAction" prefHeight="56.0" prefWidth="128.0" style="-fx-background-color: green;" text="Ok">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Button>
+      <Button fx:id="badButton" layoutX="1071.0" layoutY="678.0" mnemonicParsing="false" onAction="#badAction" prefHeight="56.0" prefWidth="128.0" style="-fx-background-color: red;" text="Bad">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

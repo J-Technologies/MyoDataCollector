@@ -4,6 +4,10 @@ import com.thalmic.myo.DeviceListener;
 import com.thalmic.myo.Hub;
 import com.thalmic.myo.Myo;
 import com.thalmic.myo.enums.StreamEmgType;
+import nl.ordina.jtech.bigdata.myo.core.csv.CsvDataCollectionWriter;
+import nl.ordina.jtech.bigdata.myo.core.csv.CsvDataCollector;
+import nl.ordina.jtech.bigdata.myo.core.DataCollectionWriter;
+import nl.ordina.jtech.bigdata.myo.core.DeviceListenerImpl;
 
 import java.io.IOException;
 
@@ -12,11 +16,16 @@ import java.io.IOException;
  */
 public class MyoDataCollectorCmdLine {
 
-    private DataCollector dataWriterAndCollector = new DataCollector();
+    private CsvDataCollector dataCollector;
+    DataCollectionWriter dataCollectionWriter;
+
+    public MyoDataCollectorCmdLine() throws IOException {
+        dataCollector = new CsvDataCollector();
+        dataCollectionWriter = new CsvDataCollectionWriter(dataCollector, "c:\\tmp\\myo");
+    }
 
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         MyoDataCollectorCmdLine myoDataCollectorCmdLine = new MyoDataCollectorCmdLine();
         myoDataCollectorCmdLine.start();
 
@@ -35,7 +44,7 @@ public class MyoDataCollectorCmdLine {
             myo.setStreamEmg(StreamEmgType.STREAM_EMG_ENABLED);
 
             System.out.println("Connected to a Myo armband!");
-            DeviceListener dataCollector = new DeviceListenerImpl(dataWriterAndCollector);
+            DeviceListener dataCollector = new DeviceListenerImpl(this.dataCollector);
             hub.addListener(dataCollector);
 
             while (true) {
@@ -73,28 +82,21 @@ public class MyoDataCollectorCmdLine {
 
             }
         }
-
-
-
     }
 
     private  void doBad() {
         System.out.println("Bad");
-        dataWriterAndCollector.writeBadData();
+        dataCollectionWriter.writeBadData();
         clearInBuffer();
     }
 
     private  void doOk() {
         System.out.println("Ok");
-        dataWriterAndCollector
-                .writeOkData();
+        dataCollectionWriter.writeOkData();
         clearInBuffer();
-
     }
 
     private  void clearInBuffer()  {
-
-
         try {
             while(System.in.available() > 0
                     ) {

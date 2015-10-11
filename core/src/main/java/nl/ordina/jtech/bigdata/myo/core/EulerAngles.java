@@ -1,4 +1,4 @@
-package nl.ordina.jtech.bigdata.myo.cmdline;
+package nl.ordina.jtech.bigdata.myo.core;
 
 import com.thalmic.myo.Quaternion;
 
