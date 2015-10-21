@@ -19,6 +19,10 @@ public interface RecordObserver {
         listeners.remove(listener);
     }
 
+    default List<RecordListener> getListeners() {
+        return listeners;
+    }
+
     default void emit(final MyoDataRecord record) {
         listeners.stream().forEach(s -> s.newRecord(record));
     }

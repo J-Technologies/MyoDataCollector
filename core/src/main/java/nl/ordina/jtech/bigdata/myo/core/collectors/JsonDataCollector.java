@@ -94,7 +94,6 @@ public class JsonDataCollector implements DeviceListener, RecordObserver {
             if (l != lastTimestamp) {
                 lastTimestamp = l;
                 dataRecord.setEmg(bytes);
-                System.out.println(dataRecord);
                 emit(dataRecord);
                 dataRecord = new MyoDataRecord(l, bytes);
             }

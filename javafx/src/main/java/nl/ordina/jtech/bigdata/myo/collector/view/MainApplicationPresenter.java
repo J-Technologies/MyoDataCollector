@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import nl.ordina.jtech.bigdata.myo.core.collectors.FileMyoDataCollector;
 import nl.ordina.jtech.bigdata.myo.core.collectors.JsonDataCollector;
+import nl.ordina.jtech.bigdata.myo.core.collectors.RecordListener;
+import nl.ordina.jtech.bigdata.myo.core.collectors.SocketServerCollector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,7 +33,7 @@ public class MainApplicationPresenter implements Initializable {
     Button stopButton;
     private boolean collecting = true;
     private Hub hub;
-    private FileMyoDataCollector fileMyoDataCollector;
+    private JsonDataCollector jsonDataCollector;
 
 
     @Override
@@ -50,8 +52,8 @@ public class MainApplicationPresenter implements Initializable {
 
 
     public void startAction() {
-        fileMyoDataCollector.start();
         collecting = true;
+        jsonDataCollector.getListeners().stream().forEach(RecordListener::start);
         startButton.setDefaultButton(false);
         stopButton.setDefaultButton(true);
         toggleButtons();
@@ -63,10 +65,10 @@ public class MainApplicationPresenter implements Initializable {
     }
 
     public void stopAction() {
-        fileMyoDataCollector.stop();
+        jsonDataCollector.getListeners().stream().forEach(RecordListener::stop);
         collecting = false;
         toggleButtons();
-        fileMyoDataCollector.dump("Data");
+        jsonDataCollector.getListeners().stream().forEach(s -> s.dump("Data"));
         startButton.setDefaultButton(true);
         stopButton.setDefaultButton(false);
     }
@@ -91,15 +93,13 @@ public class MainApplicationPresenter implements Initializable {
             myo.setStreamEmg(StreamEmgType.STREAM_EMG_ENABLED);
             LOGGER.info("EMG Stream enabled");
             updateMyoStatus("Connected to a Myo armband!");
-//            DeviceListenerImpl deviceListener = new DeviceListenerImpl(dataCollectors);
-//            deviceListener.addListener(dataCollectors);
 
-            JsonDataCollector jsonDataCollector = new JsonDataCollector();
-            fileMyoDataCollector = new FileMyoDataCollector("c:\\tmp\\myo");
-            jsonDataCollector.addObserver(fileMyoDataCollector);
+
+            jsonDataCollector = new JsonDataCollector();
+            jsonDataCollector.addObserver(new FileMyoDataCollector("c:\\tmp\\myo"));
+            jsonDataCollector.addObserver(new SocketServerCollector());
 
             hub.addListener(jsonDataCollector);
-//            hub.addListener(deviceListener);
             LOGGER.info("Listener added");
 
             startButton.setDisable(false);

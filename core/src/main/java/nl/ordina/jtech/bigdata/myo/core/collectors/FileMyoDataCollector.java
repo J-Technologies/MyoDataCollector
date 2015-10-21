@@ -48,7 +48,6 @@ public class FileMyoDataCollector implements RecordListener {
     @Override
     public void stop() {
         collecting = false;
-        //Nothing
     }
 
     @Override
