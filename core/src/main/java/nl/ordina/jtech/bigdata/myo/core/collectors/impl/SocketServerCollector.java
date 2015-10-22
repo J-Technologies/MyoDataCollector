@@ -16,8 +16,9 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.core.collectors;
+package nl.ordina.jtech.bigdata.myo.core.collectors.impl;
 
+import nl.ordina.jtech.bigdata.myo.core.collectors.RecordListener;
 import nl.ordina.jtech.bigdata.myo.core.model.MyoDataRecord;
 
 import java.io.IOException;

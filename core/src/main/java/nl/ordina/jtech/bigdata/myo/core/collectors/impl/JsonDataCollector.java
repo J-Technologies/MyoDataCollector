@@ -16,13 +16,14 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.core.collectors;
+package nl.ordina.jtech.bigdata.myo.core.collectors.impl;
 
 import com.thalmic.myo.*;
 import com.thalmic.myo.enums.Arm;
 import com.thalmic.myo.enums.WarmupResult;
 import com.thalmic.myo.enums.WarmupState;
 import com.thalmic.myo.enums.XDirection;
+import nl.ordina.jtech.bigdata.myo.core.collectors.RecordObserver;
 import nl.ordina.jtech.bigdata.myo.core.model.MyoDataRecord;
 
 /**
