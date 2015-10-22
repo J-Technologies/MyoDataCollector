@@ -22,15 +22,15 @@ import nl.ordina.jtech.bigdata.myo.core.collectors.RecordListener;
 import nl.ordina.jtech.bigdata.myo.core.model.MyoDataRecord;
 
 /**
- * Created by pieter on 10/21/2015.
+ * Listener for logging to Sustem.out
  */
 public class LoggingRecordListener implements RecordListener {
     private boolean running = false;
 
     @Override
-    public void newRecord(MyoDataRecord record) {
+    public void newRecord(MyoDataRecord dataRecord) {
         if (running) {
-            System.out.println(record);
+            System.out.println(dataRecord);
         }
     }
 

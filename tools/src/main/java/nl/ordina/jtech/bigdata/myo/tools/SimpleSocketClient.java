@@ -40,9 +40,10 @@ public class SimpleSocketClient {
             while (socket.isConnected()) {
                 int read = inputStream.read(buffer);
                 if (read > 0) {
-                    System.out.println("new String(buffer, 0, read) = " + new String(buffer, 0, read));
+                    System.out.print(new String(buffer, 0, read));
+                } else {
+                    Thread.sleep(5);
                 }
-                Thread.sleep(10);
             }
         } catch (IOException e) {
             e.printStackTrace();

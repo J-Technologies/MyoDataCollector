@@ -22,7 +22,7 @@ import com.google.gson.Gson;
 import com.thalmic.myo.Quaternion;
 
 /**
- * Created by pieter on 9/11/2015.
+ * Extension on the Myo data model.
  */
 public class EulerAngles {
     public static final Gson GSON = new Gson();
@@ -31,6 +31,11 @@ public class EulerAngles {
     private final double pitch;
     private final double yaw;
 
+    /**
+     * Constructor
+     * Callculate the Euler angels from a {@link Quaternion}
+     * @param rotation Quaternion
+     */
     public EulerAngles(Quaternion rotation) {
         Quaternion normalized = rotation.normalized();
 
@@ -38,20 +43,31 @@ public class EulerAngles {
         double pitch = Math.asin(2.0f * (normalized.getW() * normalized.getY() - normalized.getZ() * normalized.getX()));
         double yaw = Math.atan2(2.0f * (normalized.getW() * normalized.getZ() + normalized.getX() * normalized.getY()), 1.0f - 2.0f * (normalized.getY() * normalized.getY() + normalized.getZ() * normalized.getZ()));
 
-
         this.roll = ((roll + Math.PI) / (Math.PI * 2.0) * SCALE);
         this.pitch = ((pitch + Math.PI / 2.0) / Math.PI * SCALE);
         this.yaw = ((yaw + Math.PI) / (Math.PI * 2.0) * SCALE);
     }
 
+    /**
+     * Getter
+     * @return roll
+     */
     public double getRoll() {
         return roll;
     }
 
+    /**
+     * Getter
+     * @return pitch
+     */
     public double getPitch() {
         return pitch;
     }
 
+    /**
+     * Getter yaw
+     * @return
+     */
     public double getYaw() {
         return yaw;
     }

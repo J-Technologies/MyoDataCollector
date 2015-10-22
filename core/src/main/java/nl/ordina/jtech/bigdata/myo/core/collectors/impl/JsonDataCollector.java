@@ -27,7 +27,8 @@ import nl.ordina.jtech.bigdata.myo.core.collectors.RecordObserver;
 import nl.ordina.jtech.bigdata.myo.core.model.MyoDataRecord;
 
 /**
- * Created by pieter on 10/2/2015.
+ * Myo Decvice listsner implementation.
+ * used tyo collect sensor data
  */
 public class JsonDataCollector implements DeviceListener, RecordObserver {
 

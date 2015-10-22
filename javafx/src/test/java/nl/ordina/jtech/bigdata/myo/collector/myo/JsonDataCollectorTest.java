@@ -18,7 +18,7 @@
 
 package nl.ordina.jtech.bigdata.myo.collector.myo;
 
-import nl.ordina.jtech.bigdata.myo.core.collectors.JsonDataCollector;
+import nl.ordina.jtech.bigdata.myo.core.collectors.impl.JsonDataCollector;
 import org.junit.Test;
 
 /**

@@ -24,23 +24,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by pieter on 10/11/2015.
+ * Observer
  */
 public interface RecordObserver {
+    /**
+     * All registered listeners
+     */
     List<RecordListener> listeners = new ArrayList();
 
-    default void addObserver(final RecordListener listener) {
+    /**
+     * Add a Observer
+     * @param listener subject
+     */
+    default void addListsner(final RecordListener listener) {
         listeners.add(listener);
     }
 
-    default void removeObserver(final RecordListener listener) {
+    /**
+     * Remove listener
+     * @param listener subject
+     */
+    default void removeListener(final RecordListener listener) {
         listeners.remove(listener);
     }
 
+    /**
+     * Get All listeners
+     * @return
+     */
     default List<RecordListener> getListeners() {
         return listeners;
     }
 
+    /**
+     * Emit a event
+     * @param record event data
+     */
     default void emit(final MyoDataRecord record) {
         listeners.stream().forEach(s -> s.newRecord(record));
     }

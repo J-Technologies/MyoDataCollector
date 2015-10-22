@@ -25,7 +25,8 @@ import com.thalmic.myo.Quaternion;
 import com.thalmic.myo.Vector3;
 
 /**
- * Created by pieter on 10/11/2015.
+ *  Internal representation of a Myo record received.
+ *  Its a aggragation of multiple data elements from the Myo
  */
 public class MyoDataRecord {
 
@@ -74,7 +75,11 @@ public class MyoDataRecord {
 
     @Override
     public String toString() {
-        return gson.toJson(this);
+        try {
+            return gson.toJson(this);
+        } catch (IllegalArgumentException e) {
+            return "";
+        }
     }
 
     public void reset(final long timestamp, byte[] emgData) {

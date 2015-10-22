@@ -21,15 +21,32 @@ package nl.ordina.jtech.bigdata.myo.core.collectors;
 import nl.ordina.jtech.bigdata.myo.core.model.MyoDataRecord;
 
 /**
- * Created by pieter on 10/11/2015.
+ * Listener for record updates
+ * The listener can be turned on and of.
  */
 public interface RecordListener {
-    void newRecord(final MyoDataRecord listener);
+    /**
+     * New Record available
+     * @param dataRecord record
+     */
+    void newRecord(final MyoDataRecord dataRecord);
 
+    /**
+     * Turn on
+     */
     void start();
 
+    /**
+     * Turn off
+     */
     void stop();
 
+    /**
+     * Dump something collected
+     * @param key key
+     */
     void dump(final String key);
+
+   default  boolean isActive() {return false;}
 
 }
