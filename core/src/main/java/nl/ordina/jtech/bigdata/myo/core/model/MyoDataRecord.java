@@ -21,8 +21,10 @@
 package nl.ordina.jtech.bigdata.myo.core.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.thalmic.myo.Quaternion;
 import com.thalmic.myo.Vector3;
+import nl.ordina.jtech.bigdata.myo.core.serializers.MyDataRecordSerializer;
 
 /**
  *  Internal representation of a Myo record received.
@@ -30,7 +32,13 @@ import com.thalmic.myo.Vector3;
  */
 public class MyoDataRecord {
 
-    public static final Gson gson = new Gson();
+    public static final Gson gson;
+
+    static {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(MyoDataRecord.class, new MyDataRecordSerializer());
+        gson = builder.create();
+    }
     private long timestamp;
     private byte[] emg;
     private Quaternion quaternion;
@@ -47,39 +55,19 @@ public class MyoDataRecord {
         this.emg = emg;
     }
 
-    public void setQuaternion(Quaternion quaternion) {
-        this.quaternion = quaternion;
-        normalizedQuaternion = quaternion.normalized();
-        eulerAngles = new EulerAngles(quaternion);
-        normalizedEulerAngles = new EulerAngles(normalizedQuaternion);
-    }
-
-    public void setAcceleratorMeter(Vector3 acceleratorMeter) {
-        this.acceleratorMeter = acceleratorMeter;
-        this.normalizedAcceleratorMeter = acceleratorMeter.normalized();
-    }
-
-
-    public void setGyro(Vector3 gyro) {
-        this.gyro = gyro;
-        this.normalizedGyro = gyro.normalized();
-    }
-
-    public void setEmg(byte[] emg) {
-        this.emg = emg;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
     @Override
     public String toString() {
+
         try {
             return gson.toJson(this);
         } catch (IllegalArgumentException e) {
             return "";
         }
+//        StringBuilder builder = new StringBuilder();
+//        builder.append("{");
+//        builder.append("\"timestamp\":" + timestamp);
+//
+//        return builder.toString();
     }
 
     public void reset(final long timestamp, byte[] emgData) {
@@ -87,11 +75,76 @@ public class MyoDataRecord {
         normalizedQuaternion = null;
         eulerAngles = null;
         normalizedEulerAngles = null;
-        acceleratorMeter= null;
+        acceleratorMeter = null;
         normalizedAcceleratorMeter = null;
         gyro = null;
         normalizedGyro = null;
         emg = emgData;
         this.timestamp = timestamp;
+    }
+
+    public byte[] getEmg() {
+        return emg;
+    }
+
+    public void setEmg(byte[] emg) {
+        this.emg = emg;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Quaternion getQuaternion() {
+        return quaternion;
+    }
+
+    public void setQuaternion(Quaternion quaternion) {
+        this.quaternion = quaternion;
+        normalizedQuaternion = quaternion.normalized();
+        eulerAngles = new EulerAngles(quaternion);
+        normalizedEulerAngles = new EulerAngles(normalizedQuaternion);
+    }
+
+    public Quaternion getNormalizedQuaternion() {
+        return normalizedQuaternion;
+    }
+
+    public EulerAngles getEulerAngles() {
+        return eulerAngles;
+    }
+
+    public EulerAngles getNormalizedEulerAngles() {
+        return normalizedEulerAngles;
+    }
+
+    public Vector3 getAcceleratorMeter() {
+        return acceleratorMeter;
+    }
+
+    public void setAcceleratorMeter(Vector3 acceleratorMeter) {
+        this.acceleratorMeter = acceleratorMeter;
+        this.normalizedAcceleratorMeter = acceleratorMeter.normalized();
+    }
+
+    public Vector3 getGyro() {
+        return gyro;
+    }
+
+    public void setGyro(Vector3 gyro) {
+        this.gyro = gyro;
+        this.normalizedGyro = gyro.normalized();
+    }
+
+    public Vector3 getNormalizedAcceleratorMeter() {
+        return normalizedAcceleratorMeter;
+    }
+
+    public Vector3 getNormalizedGyro() {
+        return normalizedGyro;
     }
 }

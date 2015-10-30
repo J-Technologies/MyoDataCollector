@@ -37,7 +37,7 @@ public class EulerAngles {
      * @param rotation Quaternion
      */
     public EulerAngles(Quaternion rotation) {
-        Quaternion normalized = rotation.normalized();
+        Quaternion normalized = rotation;
 
         double roll = Math.atan2(2.0f * (normalized.getW() * normalized.getX() + normalized.getY() * normalized.getZ()), 1.0f - 2.0f * (normalized.getX() * normalized.getX() + normalized.getY() * normalized.getY()));
         double pitch = Math.asin(2.0f * (normalized.getW() * normalized.getY() - normalized.getZ() * normalized.getX()));
