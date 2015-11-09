@@ -49,22 +49,22 @@ public class MyDataRecordSerializer implements JsonSerializer<MyoDataRecord> {
     }
 
     private void convertQuaternion(JsonObject jsonObject, Quaternion quaternion, String name) {
-        jsonObject.add(name + "_x", new JsonPrimitive(quaternion.getX()));
-        jsonObject.add(name + "_y", new JsonPrimitive(quaternion.getY()));
-        jsonObject.add(name + "_z", new JsonPrimitive(quaternion.getZ()));
-        jsonObject.add(name + "_w", new JsonPrimitive(quaternion.getW()));
+        jsonObject.add(name + "_x", new JsonPrimitive(quaternion!=null?quaternion.getX():0));
+        jsonObject.add(name + "_y", new JsonPrimitive(quaternion!=null?quaternion.getY():0));
+        jsonObject.add(name + "_z", new JsonPrimitive(quaternion!=null?quaternion.getZ():0));
+        jsonObject.add(name + "_w", new JsonPrimitive(quaternion!=null?quaternion.getW():0));
     }
 
     private void convertVector(JsonObject jsonObject, Vector3 vector3, String name) {
-        jsonObject.add(name + "_x", new JsonPrimitive(vector3.getX()));
-        jsonObject.add(name + "_y", new JsonPrimitive(vector3.getY()));
-        jsonObject.add(name + "_z", new JsonPrimitive(vector3.getZ()));
+        jsonObject.add(name + "_x", new JsonPrimitive(vector3!=null?vector3.getX():0));
+        jsonObject.add(name + "_y", new JsonPrimitive(vector3!=null?vector3.getY():0));
+        jsonObject.add(name + "_z", new JsonPrimitive(vector3!=null?vector3.getZ():0));
     }
 
     private void convertEulerAngels(JsonObject jsonObject, EulerAngles angels, String name) {
-        jsonObject.add(name + "_pitch", new JsonPrimitive(angels.getPitch()));
-        jsonObject.add(name + "_roll", new JsonPrimitive(angels.getRoll()));
-        jsonObject.add(name + "_yaw", new JsonPrimitive(angels.getYaw()));
+        jsonObject.add(name + "_pitch", new JsonPrimitive(angels!=null?angels.getPitch():0));
+        jsonObject.add(name + "_roll",  new JsonPrimitive(angels!=null?angels.getRoll():0));
+        jsonObject.add(name + "_yaw",   new JsonPrimitive(angels!=null?angels.getYaw():0));
     }
 
     private void convertEmg(JsonObject jsonObject, byte[] data) {
