@@ -22,18 +22,9 @@ import com.thalmic.myo.Myo;
 import com.thalmic.myo.enums.StreamEmgType;
 import eu.hansolo.enzo.gauge.OneEightyGauge;
 import eu.hansolo.enzo.simpleindicator.SimpleIndicator;
-import javafx.beans.InvalidationListener;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -47,17 +38,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 import java.net.URL;
 import java.nio.channels.AsynchronousSocketChannel;
-import java.nio.channels.Channel;
-import java.nio.channels.NetworkChannel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Main application
@@ -116,16 +103,18 @@ public class MainApplicationPresenter implements Initializable {
         startButton.setDefaultButton(false);
         stopButton.setDefaultButton(true);
         toggleButtons();
+        //todo must be killed by stop action
         new Thread(() -> {
             while (collecting) {
                 hub.run(100);
             }
+            System.out.println("collecting = " + collecting);
         }).start();
     }
 
     public void stopAction() {
-        jsonDataCollector.getListeners().stream().forEach(RecordListener::stop);
         collecting = false;
+        jsonDataCollector.getListeners().stream().forEach(RecordListener::stop);
         toggleButtons();
         jsonDataCollector.getListeners().stream().forEach(s -> s.dump("Data"));
         startButton.setDefaultButton(true);

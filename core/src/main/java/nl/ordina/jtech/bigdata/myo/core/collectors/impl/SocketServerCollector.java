@@ -23,9 +23,6 @@ import nl.ordina.jtech.bigdata.myo.core.model.MyoDataRecord;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketOption;
-import java.net.SocketOptions;
-import java.net.StandardSocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
@@ -33,24 +30,20 @@ import java.nio.channels.CompletionHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 /**
  * Server for clients to recieve events.
- *
+ * <p>
  * Allows for multiple connections
  */
 public class SocketServerCollector implements RecordListener {
 
-    boolean stream = false;
     public List<AsynchronousSocketChannel> channels = new ArrayList<>();
+    boolean stream = false;
 
     public SocketServerCollector() {
         initialize();
     }
-
-
-
 
 
     private void initialize() {
@@ -85,41 +78,27 @@ public class SocketServerCollector implements RecordListener {
     @Override
     public void newRecord(MyoDataRecord dataRecord) {
         if (stream) {
-//            try {
-                ByteBuffer wrap = ByteBuffer.wrap((dataRecord.toString() + "\n").getBytes());
-                for (AsynchronousSocketChannel channel : channels) {
+            ByteBuffer wrap = ByteBuffer.wrap((dataRecord.toString() + "\n").getBytes());
+            for (AsynchronousSocketChannel channel : channels) {
 
-                    try {
-                        channel.write(wrap);
-                    } catch (Exception e) {
-                        System.out.println("e.getClass() = " + e.getClass());
-                        System.out.println("e.getMessage() = " + e.getMessage());
-                        if (e instanceof ExecutionException) {
-                            if (e.getMessage().contains("closed")) {
-                                try {
-                                    channel.close();
-                                } catch (IOException e1) {
-                                    //
-                                }
+                try {
+                    channel.write(wrap);
+                } catch (Exception e) {
+                    System.out.println("e.getClass() = " + e.getClass());
+                    System.out.println("e.getMessage() = " + e.getMessage());
+                    if (e instanceof ExecutionException) {
+                        if (e.getMessage().contains("closed")) {
+                            try {
+                                channel.close();
+                            } catch (IOException e1) {
+                                //
                             }
                         }
                     }
-
-//                    if (channel.isOpen()) {
-//                        Future<Integer> write = channel.write(wrap);
-//                        Integer integer = write.get();
-//                        if (integer <= 0) {
-//                            System.out.println("integer = " + integer);
-//                        }
-//                    } else {
-//                        System.out.println("Not open");
-//                    }
                 }
-                //channels.stream().filter(s -> s.isOpen()).forEach(s -> s.write(wrap));
-//            } catch (Exception e) {
-//                System.out.println("Consumer is to slow.. dropping data" + e.getMessage());
-//                System.out.println("e.getClass() = " + e.getClass());
-//            }
+
+            }
+
         }
     }
 
