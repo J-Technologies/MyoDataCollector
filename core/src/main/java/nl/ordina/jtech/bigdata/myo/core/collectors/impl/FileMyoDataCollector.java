@@ -79,6 +79,7 @@ public class FileMyoDataCollector implements RecordListener {
             List<String> tmp = new ArrayList<>(collected.size());
             collected.forEach(s -> tmp.add(s.toString()));
             Files.write(tempFile, tmp, Charset.defaultCharset(), StandardOpenOption.WRITE);
+            collected.clear();
         } catch (IOException e) {
             e.printStackTrace();
         }
