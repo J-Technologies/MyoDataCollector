@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import eu.hansolo.enzo.simpleindicator.SimpleIndicator?>
+<?import eu.hansolo.enzo.sixteensegment.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<!--
+  ~ Copyright (c) 2014 Pieter van der Meer (pieter_at_elucidator_nl)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="550.0"
+            minWidth="900.0" prefHeight="550.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8"
+            fx:controller="nl.ordina.jtech.bigdata.myo.collector.view.MyoApplicationPresenter">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Preferences">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#actionStorageLocation" text="Storage location"/>
+                        <MenuItem mnemonicParsing="false" onAction="#actionCollectMode" text="Collect mode"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#actionAbout" text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <BorderPane prefHeight="463.0" prefWidth="805.0" BorderPane.alignment="CENTER">
+            <bottom>
+                <GridPane prefHeight="95.0" prefWidth="950.0" BorderPane.alignment="TOP_LEFT">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="580.0" minWidth="10.0" prefWidth="495.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="485.0" minWidth="10.0" prefWidth="158.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="669.0" minWidth="10.0" prefWidth="231.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Button fx:id="buttonStart" mnemonicParsing="false" onAction="#actionStart" prefHeight="69.0"
+                                prefWidth="131.0" text="Start" GridPane.columnIndex="1">
+                            <font>
+                                <Font size="32.0"/>
+                            </font>
+                        </Button>
+                        <Button fx:id="buttonStop" mnemonicParsing="false" onAction="#actionStop" prefHeight="69.0"
+                                prefWidth="131.0" text="Stop" GridPane.columnIndex="2">
+                            <font>
+                                <Font size="32.0"/>
+                            </font>
+                        </Button>
+                    </children>
+                </GridPane>
+            </bottom>
+            <top>
+                <GridPane alignment="TOP_RIGHT" prefHeight="70.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <SimpleIndicator fx:id="indicatorMyo" indicatorStyle="GREEN" maxHeight="50.0" maxWidth="50.0"
+                                         minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0"
+                                         scaleShape="false" GridPane.columnIndex="1" GridPane.halignment="LEFT"
+                                         GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                            <!--<cursor>-->
+                            <!--<Cursor fx:constant="NONE" />-->
+                            <!--</cursor>-->
+                            <GridPane.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </GridPane.margin>
+                        </SimpleIndicator>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="27.0" prefWidth="96.0"
+                               text="Myo" GridPane.halignment="RIGHT">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="27.0" prefWidth="244.0"
+                               text="Apache Spark" GridPane.columnIndex="2">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <SimpleIndicator fx:id="indicatorSpark" indicatorStyle="GREEN" maxHeight="50.0" maxWidth="50.0"
+                                         minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0"
+                                         scaleShape="false" GridPane.columnIndex="3">
+                            <cursor>
+                                <Cursor fx:constant="NONE"/>
+                            </cursor>
+                            <GridPane.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </GridPane.margin>
+                        </SimpleIndicator>
+                    </children>
+                </GridPane>
+            </top>
+            <BorderPane.margin>
+                <Insets/>
+            </BorderPane.margin>
+            <center>
+                <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <children>
+                                <SixteenSegment fx:id="segment0" character="N" opacity="0.67" segmentStyle="BLACK"/>
+                                <SixteenSegment fx:id="segment1" character="O" opacity="0.67" segmentStyle="BLACK"
+                                                GridPane.columnIndex="1"/>
+                                <SixteenSegment fx:id="segment2" character="T" dotOn="true" opacity="0.67"
+                                                segmentStyle="BLACK" GridPane.columnIndex="2"/>
+                                <SixteenSegment fx:id="segment3" character="C" opacity="0.67" segmentStyle="BLACK"
+                                                GridPane.columnIndex="3"/>
+                                <SixteenSegment fx:id="segment4" character="O" opacity="0.67" segmentStyle="BLACK"
+                                                GridPane.columnIndex="4"/>
+                                <SixteenSegment fx:id="segment5" character="N" dotOn="true" opacity="0.67"
+                                                segmentStyle="BLACK" GridPane.columnIndex="5"/>
+                            </children>
+                        </GridPane>
+                    </center>
+                    <BorderPane.margin>
+                        <Insets bottom="10.0" left="50.0" right="50.0" top="10.0"/>
+                    </BorderPane.margin>
+                    <top>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Speed" wrappingWidth="191.140625"
+                              BorderPane.alignment="CENTER">
+                            <font>
+                                <Font size="64.0"/>
+                            </font>
+                        </Text>
+                    </top>
+                </BorderPane>
+            </center>
+        </BorderPane>
+    </center>
+    <bottom>
+        <Label fx:id="statusBar" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="0.0"
+               style="-fx-background-color: #d3d3d3;" text="Status info line" textFill="#510be8"
+               BorderPane.alignment="CENTER"/>
+    </bottom>
+</BorderPane>

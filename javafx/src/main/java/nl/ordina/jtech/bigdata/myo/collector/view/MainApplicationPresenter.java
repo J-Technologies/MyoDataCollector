@@ -112,6 +112,7 @@ public class MainApplicationPresenter implements Initializable {
         }).start();
     }
 
+
     public void stopAction() {
         collecting = false;
         jsonDataCollector.getListeners().stream().forEach(RecordListener::stop);
