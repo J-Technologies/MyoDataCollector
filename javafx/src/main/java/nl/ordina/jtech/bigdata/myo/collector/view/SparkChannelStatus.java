@@ -17,17 +17,24 @@
 
 package nl.ordina.jtech.bigdata.myo.collector.view;
 
-import com.airhacks.afterburner.views.FXMLView;
-
-import javax.annotation.PostConstruct;
+import eu.hansolo.enzo.simpleindicator.SimpleIndicator;
 
 /**
- * Created by pieter on 11/11/2015.
+ * Created by pieter on 11/12/2015.
  */
-public class MyoApplicationView extends FXMLView {
+public enum SparkChannelStatus {
+    SENDING(SimpleIndicator.IndicatorStyle.GREEN),
+    CONNECTED(SimpleIndicator.IndicatorStyle.ORANGE),
+    DISCONNECTED(SimpleIndicator.IndicatorStyle.RED);
 
-    @PostConstruct
-    public void init() {
-        System.out.println("Tower.init()");
+    private SimpleIndicator.IndicatorStyle value;
+
+    SparkChannelStatus(SimpleIndicator.IndicatorStyle red) {
+        value = red;
     }
+
+    public SimpleIndicator.IndicatorStyle getColor() {
+        return value;
+    }
+
 }

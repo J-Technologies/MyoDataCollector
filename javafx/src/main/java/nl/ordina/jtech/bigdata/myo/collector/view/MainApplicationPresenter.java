@@ -202,11 +202,6 @@ public class MainApplicationPresenter implements Initializable {
 
             inboundConnections.itemsProperty().bind(task.valueProperty());
             indicatorServer.onProperty().bind(booleanTask.valueProperty());
-//            try {
-//                indicatorServer.indicatorStyleProperty().bind(stringTask.valueProperty());
-//            } catch (Throwable e) {
-//                //??Throws a null ppointer but it works??
-//            }
 
 
             Thread thread = new Thread(task);
