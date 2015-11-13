@@ -52,6 +52,7 @@ public class DeamonTask<T> extends Task<T> {
                 updateValue(supplier.get());
                 Thread.sleep(25);
             } catch (InterruptedException e) {
+                System.out.println("Stopped?");
                 return null;
             }
         }

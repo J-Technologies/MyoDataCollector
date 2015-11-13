@@ -15,39 +15,21 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.core.collectors;
+package nl.ordina.jtech.bigdata.myo.collector.myo;
 
-import nl.ordina.jtech.bigdata.myo.core.model.MyoDataRecord;
+import nl.ordina.jtech.bigdata.myo.core.collectors.impl.DataRecordDeviceListener;
+import org.junit.Test;
 
 /**
- * Listener for record updates
- * The listener can be turned on and of.
+ * Created by pieter on 10/2/2015.
  */
-public interface RecordListener {
-    /**
-     * New Record available
-     * @param dataRecord record
-     */
-    void newRecord(final MyoDataRecord dataRecord);
+public class DataRecordDeviceListenerTest {
 
-    /**
-     * Turn on
-     */
-    void start();
+    @Test
+    public void testOnEmgData() throws Exception {
+        DataRecordDeviceListener dataRecordDeviceListener = new DataRecordDeviceListener();
 
-    /**
-     * Turn off
-     */
-    void stop();
-
-    /**
-     * Dump something collected
-     */
-    default void dump() {
+        byte[] bytes = {-10, 100, -23, -54};
+        dataRecordDeviceListener.onEmgData(null, 1, bytes);
     }
-
-    default boolean isActive() {
-        return false;
-    }
-
 }

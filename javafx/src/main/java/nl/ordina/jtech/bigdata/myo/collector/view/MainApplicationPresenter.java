@@ -31,8 +31,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import nl.ordina.jtech.bigdata.myo.core.collectors.RecordListener;
+import nl.ordina.jtech.bigdata.myo.core.collectors.impl.DataRecordDeviceListener;
 import nl.ordina.jtech.bigdata.myo.core.collectors.impl.FileMyoDataCollector;
-import nl.ordina.jtech.bigdata.myo.core.collectors.impl.JsonDataCollector;
 import nl.ordina.jtech.bigdata.myo.core.collectors.impl.SocketServerCollector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,7 +74,7 @@ public class MainApplicationPresenter implements Initializable {
 
     private boolean collecting = true;
     private Hub hub;
-    private JsonDataCollector jsonDataCollector;
+    private DataRecordDeviceListener dataRecordDeviceListener;
 
 
     @Override
@@ -99,7 +99,7 @@ public class MainApplicationPresenter implements Initializable {
 
     public void startAction() {
         collecting = true;
-        jsonDataCollector.getListeners().stream().forEach(RecordListener::start);
+        dataRecordDeviceListener.getListeners().stream().forEach(RecordListener::start);
         startButton.setDefaultButton(false);
         stopButton.setDefaultButton(true);
         toggleButtons();
@@ -115,9 +115,9 @@ public class MainApplicationPresenter implements Initializable {
 
     public void stopAction() {
         collecting = false;
-        jsonDataCollector.getListeners().stream().forEach(RecordListener::stop);
+        dataRecordDeviceListener.getListeners().stream().forEach(RecordListener::stop);
         toggleButtons();
-        jsonDataCollector.getListeners().stream().forEach(s -> s.dump("Data"));
+        dataRecordDeviceListener.getListeners().stream().forEach(RecordListener::dump);
         startButton.setDefaultButton(true);
         stopButton.setDefaultButton(false);
     }
@@ -144,11 +144,11 @@ public class MainApplicationPresenter implements Initializable {
             updateMyoStatus("Connected to a Myo armband!");
 
 
-            jsonDataCollector = new JsonDataCollector();
-            jsonDataCollector.addListsner(new FileMyoDataCollector("c:\\tmp\\myo"));
-            jsonDataCollector.addListsner(new SocketServerCollector());
+            dataRecordDeviceListener = new DataRecordDeviceListener();
+            dataRecordDeviceListener.addListener(new FileMyoDataCollector("c:\\tmp\\myo"));
+            dataRecordDeviceListener.addListener(new SocketServerCollector());
 
-            hub.addListener(jsonDataCollector);
+            hub.addListener(dataRecordDeviceListener);
             LOGGER.info("Listener added");
 
             indicatorMyo.setIndicatorStyle(SimpleIndicator.IndicatorStyle.GREEN);
@@ -161,7 +161,7 @@ public class MainApplicationPresenter implements Initializable {
 
 
                     while (true) {
-                        List<RecordListener> collect = jsonDataCollector.getListeners().stream().filter(s -> s instanceof SocketServerCollector).collect(Collectors.toList());
+                        List<RecordListener> collect = dataRecordDeviceListener.getListeners().stream().filter(s -> s instanceof SocketServerCollector).collect(Collectors.toList());
                         List<String> connections = collect.stream().map(s -> ((SocketServerCollector) s).channels).flatMap(c -> c.stream().map(f -> mapRemoteAddress(f))).collect(Collectors.toList());
                         updateValue(FXCollections.observableList(connections));
                         Thread.sleep(10);
@@ -177,7 +177,7 @@ public class MainApplicationPresenter implements Initializable {
                 @Override
                 protected Boolean call() throws Exception {
                     while (true) {
-                        List<RecordListener> collect = jsonDataCollector.getListeners().stream().filter(s -> s instanceof SocketServerCollector).collect(Collectors.toList());
+                        List<RecordListener> collect = dataRecordDeviceListener.getListeners().stream().filter(s -> s instanceof SocketServerCollector).collect(Collectors.toList());
                         long count = collect.stream().map(s -> ((SocketServerCollector) s).channels).flatMap(Collection::stream).filter(AsynchronousSocketChannel::isOpen).count();
                         updateValue(count > 0 ? Boolean.TRUE : Boolean.FALSE);
                         Thread.sleep(10);
@@ -191,7 +191,7 @@ public class MainApplicationPresenter implements Initializable {
                 @Override
                 protected SimpleIndicator.IndicatorStyle call() throws Exception {
                     while (true) {
-                        List<RecordListener> collect = jsonDataCollector.getListeners().stream().filter(s -> s instanceof SocketServerCollector).collect(Collectors.toList());
+                        List<RecordListener> collect = dataRecordDeviceListener.getListeners().stream().filter(s -> s instanceof SocketServerCollector).collect(Collectors.toList());
                         long count = collect.stream().map(s -> ((SocketServerCollector) s).channels).flatMap(Collection::stream).filter(AsynchronousSocketChannel::isOpen).count();
 
                         updateValue(count > 0 ? SimpleIndicator.IndicatorStyle.RED : SimpleIndicator.IndicatorStyle.GREEN);

@@ -40,6 +40,7 @@ public class MyoApplicationPresenter implements Initializable {
 
     public static final Logger LOGGER = LogManager.getLogger(MyoApplicationPresenter.class);
     private final DataCollectManager collectManager = new DataCollectManager();
+    private final String basePath = "c:\\tmp\\myo";
     @FXML
     private Label statusBar;
     @FXML
@@ -68,7 +69,6 @@ public class MyoApplicationPresenter implements Initializable {
     private SixteenSegment[] segments = new SixteenSegment[6];
     private List<DeamonTask> tasks = new ArrayList<>();
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("Initializing");
@@ -87,7 +87,8 @@ public class MyoApplicationPresenter implements Initializable {
         segments[4] = segment4;
         segments[5] = segment5;
 
-        setSegment("DISCON.");
+
+        setSegment("DIS.CON.");
 
         indicatorSpark.indicatorStyleProperty().bind(indicatorStyleSimpleObjectProperty);
         tasks.add(new DeamonTask<Void>(() -> {
@@ -97,6 +98,9 @@ public class MyoApplicationPresenter implements Initializable {
 
         updateStausBar("Started correctly");
         LOGGER.debug("Done intitialized");
+
+        //TODO Still a gross hack, fix it
+        new DeamonTask<>(() -> setSegment(collectManager.getLatestMessage())).start();
     }
 
     @Override
@@ -110,10 +114,17 @@ public class MyoApplicationPresenter implements Initializable {
         statusBar.setText(status);
     }
 
-    private void setSegment(final String charData) {
+    private String setSegment(final String charData) {
+        String processData = charData;
+        if (charData.length() < 7) {
+            processData = charData + "         ";
+        }
         for (int i = 0, y = 0; i < 6; i++, y++) {
-            boolean hasDot = charData.substring(y + 1, y + 2).equals(".");
-            segments[i].setCharacter(charData.substring(y, y + 1));
+            boolean hasDot = false;
+            if (y + 2 <= charData.length()) {
+                hasDot = processData.substring(y + 1, y + 2).equals(".");
+            }
+            segments[i].setCharacter(processData.substring(y, y + 1));
 
             if (hasDot) {
                 segments[i].setDotOn(true);
@@ -122,6 +133,8 @@ public class MyoApplicationPresenter implements Initializable {
                 segments[i].setDotOn(false);
             }
         }
+
+        return charData;
     }
 
 
@@ -137,6 +150,7 @@ public class MyoApplicationPresenter implements Initializable {
      */
     public void actionCollectMode() {
         LOGGER.debug("Menu collect mode activated");
+        collectManager.addFileCollector(basePath);
     }
 
     /**
@@ -155,6 +169,20 @@ public class MyoApplicationPresenter implements Initializable {
         buttonStop.setDisable(false);
         buttonStop.setDefaultButton(true);
         collectManager.start();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("y = ");
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
     }
 
     /**
@@ -164,6 +192,7 @@ public class MyoApplicationPresenter implements Initializable {
         LOGGER.debug("Stop button pressed");
         buttonStart.setDisable(false);
         buttonStop.setDisable(true);
+        buttonStop.setDefaultButton(false);
         buttonStart.setDefaultButton(true);
         collectManager.stop();
     }
@@ -172,19 +201,23 @@ public class MyoApplicationPresenter implements Initializable {
      * Button Myo
      */
     public void actionMyo() {
-        if (collectManager.isConnected()) {
-            collectManager.disconnect();
-            indicatorMyo.setIndicatorStyle(SimpleIndicator.IndicatorStyle.RED);
-            indicatorMyo.setOn(true);
-            buttonMyo.setText("Connect");
-        } else {
-            collectManager.connect();
-            indicatorMyo.setIndicatorStyle(SimpleIndicator.IndicatorStyle.GREEN);
-            indicatorMyo.setOn(true);
-            buttonMyo.setText("Disconnect");
-            buttonStart.setDisable(false);
-            buttonStart.setDefaultButton(true);
-            buttonStop.setDisable(true);
-        }
+
+        collectManager.connectMyo();
+        buttonMyo.setVisible(false);
+        indicatorMyo.setIndicatorStyle(SimpleIndicator.IndicatorStyle.RED);
+        indicatorMyo.setIndicatorStyle(SimpleIndicator.IndicatorStyle.GREEN);
+        indicatorMyo.setOn(true);
+        buttonStart.setDisable(false);
+        buttonStart.setDefaultButton(true);
+        buttonStop.setDisable(true);
+
+//        if (collectManager.isConnected()) {
+//            collectManager.disconnect();
+//            buttonMyo.setText("Connect");
+//        } else {
+//            collectManager.connectMyo();
+//            indicatorMyo.setOn(true);
+//            buttonMyo.setText("Disconnect");
+//        }
     }
 }

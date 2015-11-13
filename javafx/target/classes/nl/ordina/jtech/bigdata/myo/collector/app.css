@@ -24,3 +24,12 @@
 .root {    
     -fx-font: 14px "Helvetica";
 }
+
+.black {
+    -segment-color     : black;
+    -segment-glow-color: rgba(0, 0, 0, 0.5);
+}
+.black-off {
+    -segment-color     : rgba(180, 180, 180, 0.3);
+    -segment-glow-color: transparent;
+}

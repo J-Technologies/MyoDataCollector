@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class FileMyoDataCollector implements RecordListener {
 
-    public static final String SEPARATOR = "-";
+    public static final String FILE_PREFIX = "MyoData-";
     private List<MyoDataRecord> collected = new ArrayList<>();
     private Path path;
     private boolean collecting = false;
@@ -73,9 +73,9 @@ public class FileMyoDataCollector implements RecordListener {
     }
 
     @Override
-    public void dump(String key) {
+    public void dump() {
         try {
-            Path tempFile = Files.createTempFile(path, key + SEPARATOR, ".json");
+            Path tempFile = Files.createTempFile(path, FILE_PREFIX, ".json");
             List<String> tmp = new ArrayList<>(collected.size());
             collected.forEach(s -> tmp.add(s.toString()));
             Files.write(tempFile, tmp, Charset.defaultCharset(), StandardOpenOption.WRITE);

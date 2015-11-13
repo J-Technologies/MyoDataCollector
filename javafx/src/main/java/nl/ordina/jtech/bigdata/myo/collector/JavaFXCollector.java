@@ -39,6 +39,8 @@ public class JavaFXCollector extends Application {
         MyoApplicationView applicationView = new MyoApplicationView();
         Scene scene = new Scene(applicationView.getView());
         stage.setTitle("Myo Data collector");
+        final String uri = getClass().getResource("app.css").toExternalForm();
+        scene.getStylesheets().add(uri);
         stage.setScene(scene);
         stage.show();
 
@@ -47,7 +49,7 @@ public class JavaFXCollector extends Application {
 //        Scene scene = new Scene(appView.getView());
 //        stage.setTitle("Myo Data Collector");
 //        final String uri = getClass().getResource("app.css").toExternalForm();
-//        scene.getStylesheets().add(uri);
+//
 //        stage.setScene(scene);
 //        stage.show();
     }
