@@ -45,8 +45,6 @@ public class SocketServerCollector implements RecordListener {
     boolean stream = false;
     private long recordCount = 0;
     private long droppedCount = 0;
-    private String lastReceived = "NOT.CON.";
-
     public SocketServerCollector() {
         initialize();
     }
@@ -73,8 +71,6 @@ public class SocketServerCollector implements RecordListener {
                 public void failed(Throwable exc, Void att) {
                     System.out.println("Enable to get connection" + exc.getMessage());
                 }
-
-
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,22 +97,6 @@ public class SocketServerCollector implements RecordListener {
                         }
                     }
                 }
-
-                try {
-                    ByteBuffer allocate = ByteBuffer.allocate(24);
-                    channel.read(allocate, -1, new CompletionHandler<Integer, Integer>() {
-                        @Override
-                        public void completed(Integer result, Integer attachment) {
-                            lastReceived = new String(allocate.array());
-                        }
-
-                        @Override
-                        public void failed(Throwable exc, Integer attachment) {
-                            System.out.println("exc = " + exc);
-                        }
-                    });
-                } catch (Exception e) {
-                }
             }
 
         }
@@ -127,14 +107,12 @@ public class SocketServerCollector implements RecordListener {
         stream = true;
         recordCount = 0;
         droppedCount = 0;
-        lastReceived = "NO.DATA";
     }
 
     @Override
     public void stop() {
         stream = false;
         LOGGER.info("Send {} records and dropped {}", recordCount, droppedCount);
-        lastReceived = "NO.DATA";
     }
 
     @Override
@@ -142,7 +120,4 @@ public class SocketServerCollector implements RecordListener {
         return stream;
     }
 
-    public String getRecieved() {
-        return lastReceived;
-    }
 }

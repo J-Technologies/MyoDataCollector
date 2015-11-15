@@ -66,7 +66,6 @@ public class MyoApplicationPresenter implements Initializable {
     @FXML
     private SixteenSegment segment5;
     private SimpleObjectProperty<SimpleIndicator.IndicatorStyle> indicatorStyleSimpleObjectProperty = new SimpleObjectProperty<>(SimpleIndicator.IndicatorStyle.RED);
-    private SixteenSegment[] segments = new SixteenSegment[6];
     private List<DeamonTask> tasks = new ArrayList<>();
 
     @Override
@@ -80,17 +79,11 @@ public class MyoApplicationPresenter implements Initializable {
         buttonStart.setDisable(true);
         buttonStop.setDisable(true);
 
-        segments[0] = segment0;
-        segments[1] = segment1;
-        segments[2] = segment2;
-        segments[3] = segment3;
-        segments[4] = segment4;
-        segments[5] = segment5;
+        new SpeedSegmentController(segment0, segment1, segment2, segment3, segment4, segment5);
 
-
-        setSegment("DIS.CON.");
 
         indicatorSpark.indicatorStyleProperty().bind(indicatorStyleSimpleObjectProperty);
+
         tasks.add(new DeamonTask<Void>(() -> {
             indicatorStyleSimpleObjectProperty.set(collectManager.connected2Spark().getColor());
             return null;
@@ -99,9 +92,8 @@ public class MyoApplicationPresenter implements Initializable {
         updateStausBar("Started correctly");
         LOGGER.debug("Done intitialized");
 
-        //TODO Still a gross hack, fix it
-        new DeamonTask<>(() -> setSegment(collectManager.getLatestMessage())).start();
     }
+
 
     @Override
     protected void finalize() throws Throwable {
@@ -114,28 +106,6 @@ public class MyoApplicationPresenter implements Initializable {
         statusBar.setText(status);
     }
 
-    private String setSegment(final String charData) {
-        String processData = charData;
-        if (charData.length() < 7) {
-            processData = charData + "         ";
-        }
-        for (int i = 0, y = 0; i < 6; i++, y++) {
-            boolean hasDot = false;
-            if (y + 2 <= charData.length()) {
-                hasDot = processData.substring(y + 1, y + 2).equals(".");
-            }
-            segments[i].setCharacter(processData.substring(y, y + 1));
-
-            if (hasDot) {
-                segments[i].setDotOn(true);
-                y++;
-            } else {
-                segments[i].setDotOn(false);
-            }
-        }
-
-        return charData;
-    }
 
 
     /**

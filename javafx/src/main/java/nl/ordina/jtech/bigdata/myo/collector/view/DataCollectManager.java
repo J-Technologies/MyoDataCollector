@@ -27,9 +27,7 @@ import nl.ordina.jtech.bigdata.myo.core.collectors.impl.SocketServerCollector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 /**
  * Created by pieter on 11/11/2015.
@@ -55,17 +53,6 @@ public class DataCollectManager {
         LOGGER.info("Activated Collecting mode, storage to: {}", path);
     }
 
-    //TODO Grosss hack, FIXME!!!
-    public String getLatestMessage() {
-        List<String> collect = dataRecordDeviceListener.getListeners().stream().filter(listener -> listener instanceof SocketServerCollector).map(listener -> ((SocketServerCollector) listener).getRecieved()).collect(Collectors.toList());
-
-        if (collect.isEmpty()) {
-            return "NODATA";
-        }
-
-        return collect.get(0);
-    }
-
     private void initializeMyo() {
         myoHub = new Hub(DataCollectManager.class.getCanonicalName());
         LOGGER.debug("Created instance for Myo Hub");
@@ -89,7 +76,6 @@ public class DataCollectManager {
     }
 
     public void start() {
-        //TODO Start collecting
         collecting.getAndSet(true);
         dataRecordDeviceListener.getListeners().stream().forEach(RecordListener::start);
         hubRunner = new Thread(new HubRunner());
@@ -99,7 +85,6 @@ public class DataCollectManager {
     }
 
     public void stop() {
-        //TODO Stop collecting
         collecting.getAndSet(false);
         dataRecordDeviceListener.getListeners().stream().forEach(RecordListener::stop);
         dataRecordDeviceListener.getListeners().stream().forEach(RecordListener::dump);
@@ -107,7 +92,6 @@ public class DataCollectManager {
     }
 
     public SparkChannelStatus connected2Spark() {
-        //TODO Check for connection from spark to send data
         if (connected.get() && collecting.get()) {
             return SparkChannelStatus.SENDING;
         }
