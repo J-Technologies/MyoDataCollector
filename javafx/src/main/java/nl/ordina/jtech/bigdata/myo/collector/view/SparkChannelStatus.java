@@ -20,7 +20,7 @@ package nl.ordina.jtech.bigdata.myo.collector.view;
 import eu.hansolo.enzo.simpleindicator.SimpleIndicator;
 
 /**
- * Created by pieter on 11/12/2015.
+ * Status of the spark channel
  */
 public enum SparkChannelStatus {
     SENDING(SimpleIndicator.IndicatorStyle.GREEN),

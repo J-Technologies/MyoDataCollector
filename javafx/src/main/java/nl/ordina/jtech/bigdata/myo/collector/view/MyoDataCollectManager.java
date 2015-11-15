@@ -32,8 +32,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by pieter on 11/11/2015.
  */
-public class DataCollectManager {
-    public static final Logger LOGGER = LogManager.getLogger(DataCollectManager.class);
+public class MyoDataCollectManager {
+    public static final Logger LOGGER = LogManager.getLogger(MyoDataCollectManager.class);
     private final DataRecordDeviceListener dataRecordDeviceListener;
     private Hub myoHub;
     private Myo myo;
@@ -42,7 +42,7 @@ public class DataCollectManager {
     private Thread hubRunner;
 
 
-    public DataCollectManager() {
+    public MyoDataCollectManager() {
 
         dataRecordDeviceListener = new DataRecordDeviceListener();
         dataRecordDeviceListener.addListener(new SocketServerCollector());
@@ -54,7 +54,7 @@ public class DataCollectManager {
     }
 
     private void initializeMyo() {
-        myoHub = new Hub(DataCollectManager.class.getCanonicalName());
+        myoHub = new Hub(MyoDataCollectManager.class.getCanonicalName());
         LOGGER.debug("Created instance for Myo Hub");
         connected.getAndSet(true);
         LOGGER.info("Connecting to Myo");

@@ -23,7 +23,7 @@ import javafx.application.Platform;
 import java.io.IOException;
 
 /**
- * Created by pieter on 11/15/2015.
+ * Listen on port for connection and send recieved data to a set of SixteenSegment display elements
  */
 public class SpeedSegmentController {
 
@@ -37,8 +37,8 @@ public class SpeedSegmentController {
 
     private void startSpeedSegment() {
         try {
-            DataStreamParser dataStreamParser = new DataStreamParser();
-            dataStreamParser.speedProperty().addListener((obs, oldSpeed, newSpeed) -> {
+            FeedbackDataStream feedbackDataStream = new FeedbackDataStream();
+            feedbackDataStream.speedProperty().addListener((obs, oldSpeed, newSpeed) -> {
                 Platform.runLater(() -> setSegment(newSpeed));
             });
         } catch (IOException e) {

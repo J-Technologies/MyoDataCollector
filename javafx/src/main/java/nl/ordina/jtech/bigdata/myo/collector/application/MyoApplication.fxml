@@ -26,7 +26,7 @@
 <?import javafx.scene.text.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="550.0"
             minWidth="900.0" prefHeight="550.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8"
-            fx:controller="nl.ordina.jtech.bigdata.myo.collector.view.MyoApplicationPresenter">
+            fx:controller="nl.ordina.jtech.bigdata.myo.collector.application.MyoApplicationPresenter">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>

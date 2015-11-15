@@ -15,7 +15,7 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.collector.view.task;
+package nl.ordina.jtech.bigdata.myo.collector.view;
 
 import javafx.concurrent.Task;
 

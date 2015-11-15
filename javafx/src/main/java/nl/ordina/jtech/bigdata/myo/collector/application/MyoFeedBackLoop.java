@@ -15,18 +15,17 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.collector;
+package nl.ordina.jtech.bigdata.myo.collector.application;
 
 import com.airhacks.afterburner.injection.Injector;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import nl.ordina.jtech.bigdata.myo.collector.view.MyoApplicationView;
 
 /**
  * Created by pieter on 9/18/2015.
  */
-public class JavaFXCollector extends Application {
+public class MyoFeedBackLoop extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -34,8 +33,6 @@ public class JavaFXCollector extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
-
         MyoApplicationView applicationView = new MyoApplicationView();
         Scene scene = new Scene(applicationView.getView());
         stage.setTitle("Myo Data collector");
@@ -43,15 +40,6 @@ public class JavaFXCollector extends Application {
         scene.getStylesheets().add(uri);
         stage.setScene(scene);
         stage.show();
-
-
-//        MainApplicationView appView = new MainApplicationView();
-//        Scene scene = new Scene(appView.getView());
-//        stage.setTitle("Myo Data Collector");
-//        final String uri = getClass().getResource("app.css").toExternalForm();
-//
-//        stage.setScene(scene);
-//        stage.show();
     }
 
     @Override

@@ -15,7 +15,7 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.collector.view;
+package nl.ordina.jtech.bigdata.myo.collector.application;
 
 import eu.hansolo.enzo.simpleindicator.SimpleIndicator;
 import eu.hansolo.enzo.sixteensegment.SixteenSegment;
@@ -24,7 +24,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import nl.ordina.jtech.bigdata.myo.collector.view.task.DeamonTask;
+import nl.ordina.jtech.bigdata.myo.collector.view.DeamonTask;
+import nl.ordina.jtech.bigdata.myo.collector.view.MyoDataCollectManager;
+import nl.ordina.jtech.bigdata.myo.collector.view.SpeedSegmentController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +41,7 @@ import java.util.ResourceBundle;
 public class MyoApplicationPresenter implements Initializable {
 
     public static final Logger LOGGER = LogManager.getLogger(MyoApplicationPresenter.class);
-    private final DataCollectManager collectManager = new DataCollectManager();
+    private final MyoDataCollectManager collectManager = new MyoDataCollectManager();
     private final String basePath = "c:\\tmp\\myo";
     @FXML
     private Label statusBar;

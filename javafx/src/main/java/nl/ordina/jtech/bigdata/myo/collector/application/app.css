@@ -15,19 +15,24 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.collector.view;
+.boxSpacing{
+    -fx-padding: 10 10 10 10;
+}
 
-import com.airhacks.afterburner.views.FXMLView;
+.root {    
+    -fx-font: 14px "Helvetica";
+}
 
-import javax.annotation.PostConstruct;
+.black {
+    -segment-color: black;
+    -segment-glow-color: rgba(0, 0, 0, 0.5);
+}
 
-/**
- * Created by pieter on 11/11/2015.
- */
-public class MyoApplicationView extends FXMLView {
+.black-off {
+    -segment-color: rgba(180, 180, 180, 0.1);
+    -segment-glow-color: transparent;
+}
 
-    @PostConstruct
-    public void init() {
-        System.out.println("Tower.init()");
-    }
+speedBlock {
+    font-family: "Arial Black", Gadget, sans-serif;
 }

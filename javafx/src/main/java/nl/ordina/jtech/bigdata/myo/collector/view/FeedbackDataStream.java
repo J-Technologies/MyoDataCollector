@@ -35,19 +35,19 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DataStreamParser {
+public class FeedbackDataStream {
 
     public static final int DEFAULT_PORT = 5556;
 
     private final int port;
 
     private final ExecutorService exec;
-    private final Logger logger = LogManager.getLogger(DataStreamParser.class);
+    private final Logger logger = LogManager.getLogger(FeedbackDataStream.class);
 
     private final StringProperty speed = new SimpleStringProperty(this,
             "speed", "NOT.CON.");
 
-    public DataStreamParser(int port) throws IOException {
+    public FeedbackDataStream(int port) throws IOException {
         this.port = port;
 
         this.exec = Executors.newCachedThreadPool(runnable -> {
@@ -65,7 +65,7 @@ public class DataStreamParser {
         }
     }
 
-    public DataStreamParser() throws IOException {
+    public FeedbackDataStream() throws IOException {
         this(DEFAULT_PORT);
     }
 
@@ -83,6 +83,7 @@ public class DataStreamParser {
                     logger.info("Waiting for connection:");
                     Socket socket = serverSocket.accept();
                     logger.info("Connection accepted from " + socket.getInetAddress());
+                    processLine("NO.DATA");
                     handleConnection(socket);
                 }
             } catch (Exception exc) {

@@ -15,3 +15,19 @@
  *
  */
 
+package nl.ordina.jtech.bigdata.myo.collector.application;
+
+import com.airhacks.afterburner.views.FXMLView;
+
+import javax.annotation.PostConstruct;
+
+/**
+ * Created by pieter on 11/11/2015.
+ */
+public class MyoApplicationView extends FXMLView {
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Tower.init()");
+    }
+}
