@@ -24,8 +24,6 @@ import com.thalmic.myo.enums.WarmupState;
 import com.thalmic.myo.enums.XDirection;
 import nl.ordina.jtech.bigdata.myo.core.collectors.RecordObserver;
 import nl.ordina.jtech.bigdata.myo.core.model.MyoDataRecord;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Myo Decvice listsner implementation.
@@ -33,10 +31,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class DataRecordDeviceListener implements DeviceListener, RecordObserver {
 
-    public static final Logger LOGGER = LogManager.getLogger(DataRecordDeviceListener.class);
     private long lastTimestamp = 0;
     private MyoDataRecord dataRecord = new MyoDataRecord(-1, null);
-    private long recordCount;
 
     @Override
     public void onPair(Myo myo, long l, FirmwareVersion firmwareVersion) {

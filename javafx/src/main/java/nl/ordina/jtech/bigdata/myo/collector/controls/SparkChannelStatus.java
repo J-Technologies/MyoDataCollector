@@ -15,7 +15,7 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.collector.view;
+package nl.ordina.jtech.bigdata.myo.collector.controls;
 
 import eu.hansolo.enzo.simpleindicator.SimpleIndicator;
 

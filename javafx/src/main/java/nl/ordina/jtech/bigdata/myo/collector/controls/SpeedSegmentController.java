@@ -15,7 +15,7 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.collector.view;
+package nl.ordina.jtech.bigdata.myo.collector.controls;
 
 import eu.hansolo.enzo.sixteensegment.SixteenSegment;
 import javafx.application.Platform;
@@ -23,7 +23,7 @@ import javafx.application.Platform;
 import java.io.IOException;
 
 /**
- * Listen on port for connection and send recieved data to a set of SixteenSegment display elements
+ * Listen on port for connection and send received data to a set of SixteenSegment display elements
  */
 public class SpeedSegmentController {
 

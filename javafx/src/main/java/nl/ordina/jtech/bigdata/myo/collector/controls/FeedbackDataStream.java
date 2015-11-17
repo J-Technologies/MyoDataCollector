@@ -15,7 +15,7 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.collector.view;
+package nl.ordina.jtech.bigdata.myo.collector.controls;
 
 /**
  * Created by pieter on 11/15/2015.

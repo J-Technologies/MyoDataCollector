@@ -24,9 +24,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import nl.ordina.jtech.bigdata.myo.collector.view.DeamonTask;
-import nl.ordina.jtech.bigdata.myo.collector.view.MyoDataCollectManager;
-import nl.ordina.jtech.bigdata.myo.collector.view.SpeedSegmentController;
+import nl.ordina.jtech.bigdata.myo.collector.controls.DeamonTask;
+import nl.ordina.jtech.bigdata.myo.collector.controls.MyoDataCollectManager;
+import nl.ordina.jtech.bigdata.myo.collector.controls.SpeedSegmentController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

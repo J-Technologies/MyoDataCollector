@@ -15,7 +15,7 @@
  *
  */
 
-package nl.ordina.jtech.bigdata.myo.collector.view;
+package nl.ordina.jtech.bigdata.myo.collector.controls;
 
 import com.thalmic.myo.Hub;
 import com.thalmic.myo.Myo;
