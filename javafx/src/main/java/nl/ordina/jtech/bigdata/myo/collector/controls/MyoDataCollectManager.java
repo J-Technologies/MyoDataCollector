@@ -43,7 +43,6 @@ public class MyoDataCollectManager {
 
 
     public MyoDataCollectManager() {
-
         dataRecordDeviceListener = new DataRecordDeviceListener();
         dataRecordDeviceListener.addListener(new SocketServerCollector());
     }
